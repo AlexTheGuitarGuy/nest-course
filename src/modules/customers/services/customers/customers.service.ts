@@ -27,7 +27,7 @@ export class CustomersService {
   }
 
   createCustomer(customer: CreateCustomerDto) {
-    this.customers.push(customer);
+    this.customers.push({ id: 22, ...customer });
   }
 
   getCustomers() {
