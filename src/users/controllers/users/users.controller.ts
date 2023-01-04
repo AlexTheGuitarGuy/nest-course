@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   HttpException,
+  HttpStatus,
   Inject,
   Param,
   UseInterceptors,
@@ -28,7 +29,10 @@ export class UsersController {
     const user = this.usersService.getUserByUsername(username);
 
     if (!user)
-      throw new HttpException(`User with name ${username} not found.`, 404);
+      throw new HttpException(
+        `User with name ${username} not found.`,
+        HttpStatus.NOT_FOUND,
+      );
 
     return new SerializedUser(user);
   }

@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   HttpException,
+  HttpStatus,
   Param,
   ParseIntPipe,
   Post,
@@ -20,7 +21,10 @@ export class CustomersController {
   getCustomerById(@Param('id', ParseIntPipe) id: number) {
     const user = this.customersService.findCustomerById(id);
     if (!user)
-      throw new HttpException(`Could not find customer with ID ${id}`, 404);
+      throw new HttpException(
+        `Could not find customer with ID ${id}`,
+        HttpStatus.NOT_FOUND,
+      );
     return user;
   }
 
