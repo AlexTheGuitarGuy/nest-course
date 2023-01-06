@@ -4,11 +4,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import entities from './typeorm';
 import { CustomersModule } from './modules/customers/customers.module';
 import { UsersModule } from './modules/users/users.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
-    CustomersModule,
-    UsersModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: 'localhost',
@@ -19,8 +18,9 @@ import { UsersModule } from './modules/users/users.module';
       entities,
       synchronize: true,
     }),
+    CustomersModule,
+    UsersModule,
+    AuthModule,
   ],
-  controllers: [],
-  providers: [],
 })
 export class AppModule {}

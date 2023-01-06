@@ -36,4 +36,9 @@ export class UsersService {
     const newUser = this.userRepository.create(createUserDto);
     return this.userRepository.save(newUser);
   }
+
+  async findByUsername(username: string): Promise<UserEntity | undefined> {
+    console.log('hui in users service');
+    return this.userRepository.findOneBy({ username });
+  }
 }

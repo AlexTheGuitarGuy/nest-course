@@ -12,7 +12,7 @@ export class User {
     default: '',
     unique: true,
   })
-  name: string;
+  username: string;
 
   @Column({
     nullable: false,

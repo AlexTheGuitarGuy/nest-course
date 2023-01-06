@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Inject,
   Param,
   ParseIntPipe,
   Post,
@@ -14,7 +15,10 @@ import { NotFoundException } from '../../../../exceptions/NotFoundException';
 
 @Controller('customers')
 export class CustomersController {
-  constructor(private customersService: CustomersService) {}
+  constructor(
+    @Inject('CUSTOMERS_SERVICE')
+    private readonly customersService: CustomersService,
+  ) {}
 
   @Get('')
   getAllCustomers() {

@@ -10,7 +10,7 @@ import { ValidateCustomerMiddleware } from './middleware/validate-customer/valid
 
 @Module({
   controllers: [CustomersController],
-  providers: [CustomersService],
+  providers: [{ provide: 'CUSTOMERS_SERVICE', useClass: CustomersService }],
 })
 export class CustomersModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
