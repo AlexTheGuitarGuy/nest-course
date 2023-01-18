@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { User as UserEntity } from '../../../../typeorm';
 import { User } from '../../types';
 import { CreateUserDto } from '../../dtos/CreateUser.dto';
+import { encodePassword } from '../../../../utils/bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -33,12 +34,16 @@ export class UsersService {
   }
 
   createUser(createUserDto: CreateUserDto) {
-    const newUser = this.userRepository.create(createUserDto);
+    const serializedUser = {
+      ...createUserDto,
+      password: encodePassword(createUserDto.password),
+    };
+
+    const newUser = this.userRepository.create(serializedUser);
     return this.userRepository.save(newUser);
   }
 
   async findByUsername(username: string): Promise<UserEntity | undefined> {
-    console.log('hui in users service');
     return this.userRepository.findOneBy({ username });
   }
 }
