@@ -24,18 +24,18 @@ export class UsersController {
 
   @UseInterceptors(ClassSerializerInterceptor)
   @Get()
-  getUsers() {
-    const users = this.usersService
-      .getUsers()
-      .map((user) => new SerializedUser(user));
+  async getUsers() {
+    const users = await this.usersService.getUsers();
 
-    return { count: users.length, data: users };
+    const serializedUsers = users.map((user) => new SerializedUser(user));
+
+    return { count: users.length, data: serializedUsers };
   }
 
   @UseInterceptors(ClassSerializerInterceptor)
   @Get('search/:username')
-  getUserByUsername(@Param('username') username: string) {
-    const user = this.usersService.getUserByUsername(username);
+  async getUserByUsername(@Param('username') username: string) {
+    const user = await this.usersService.findByUsername(username);
 
     if (!user)
       throw new NotFoundException({
@@ -49,8 +49,8 @@ export class UsersController {
 
   @UseInterceptors(ClassSerializerInterceptor)
   @Get(':id')
-  getUserById(@Param('id', ParseIntPipe) id: number) {
-    const user = this.usersService.getUserById(id);
+  async getUserById(@Param('id', ParseIntPipe) id: number) {
+    const user = await this.usersService.findUserById(id);
 
     if (!user)
       throw new NotFoundException({

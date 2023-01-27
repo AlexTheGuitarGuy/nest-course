@@ -7,7 +7,9 @@ import { AuthenticatedGuard, LocalAuthGuard } from '../../utils/LocalAuthGuard';
 export class AuthController {
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  async login() {}
+  async login() {
+    return {};
+  }
 
   @Get('')
   getAuthSession(@Session() session: Record<string, any>) {
@@ -17,7 +19,6 @@ export class AuthController {
   @UseGuards(AuthenticatedGuard)
   @Get('status')
   getAuthStatus(@Req() request: Request) {
-    console.log('hui');
     return request.user;
   }
 }
