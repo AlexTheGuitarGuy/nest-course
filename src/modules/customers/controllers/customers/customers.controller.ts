@@ -40,7 +40,7 @@ export class CustomersController {
     return customer;
   }
 
-  @Post()
+  @Post('')
   @UsePipes(ValidationPipe)
   postCustomer(@Body() { email, name, address }: CreateCustomerDto) {
     this.customersService.createCustomer({ email, name, address });

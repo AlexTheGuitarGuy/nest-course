@@ -16,7 +16,7 @@ async function bootstrap() {
     port: 5432,
     username: 'postgres',
     password: '#5e7g@tM0J9FfqybQ',
-    database: 'postgres',
+    database: 'tutorial_db',
     entities,
   });
 
