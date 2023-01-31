@@ -1,9 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PaymentsController } from './payments.controller';
 import { Request, Response } from 'express';
+import { PaymentsService } from '../../services/payments/payments.service';
+import { BadRequestException } from '@nestjs/common';
 
 describe('PaymentsController', () => {
   let controller: PaymentsController;
+  let paymentsService: PaymentsService;
 
   const requestMock = {
     query: {},
@@ -17,13 +20,26 @@ describe('PaymentsController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [PaymentsController],
+      providers: [
+        {
+          provide: 'PAYMENTS_SERVICE',
+          useValue: {
+            createPayment: jest.fn(() => ({ success: true })),
+          },
+        },
+      ],
     }).compile();
 
     controller = module.get<PaymentsController>(PaymentsController);
+    paymentsService = module.get<PaymentsService>('PAYMENTS_SERVICE');
   });
 
   it('should be defined', () => {
     expect(controller).toBeDefined();
+  });
+
+  it('paymentsService should be defined', () => {
+    expect(paymentsService).toBeDefined();
   });
 
   describe('getPayments', () => {
@@ -46,6 +62,33 @@ describe('PaymentsController', () => {
       controller.getPayments(requestMock, responseMock);
 
       expect(responseMock.status).toHaveBeenCalledWith(200);
+    });
+  });
+
+  describe('createPayment', () => {
+    it('should return a success flag', () => {
+      const response = controller.createPayment({
+        email: 'alex@gmail.com',
+        amount: '69',
+      });
+      expect(response).toEqual({ success: true });
+    });
+
+    it('should throw a bad request exception', () => {
+      jest
+        .spyOn(paymentsService, 'createPayment')
+        .mockImplementationOnce(() => {
+          throw new BadRequestException('Could not find user email.');
+        });
+
+      try {
+        controller.createPayment({
+          email: 'asdas@gmail.com',
+          amount: '69',
+        });
+      } catch (error) {
+        console.log(error);
+      }
     });
   });
 });
