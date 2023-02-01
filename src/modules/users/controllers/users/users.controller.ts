@@ -62,8 +62,8 @@ export class UsersController {
     return new SerializedUser(user);
   }
 
-  @Post('')
   @UsePipes(ValidationPipe)
+  @Post('')
   async createUser(@Body() createUserDto: CreateUserDto) {
     const createdUser = await this.usersService.createUser(createUserDto);
     const { password, ...serializedUser } = createdUser;
