@@ -6,6 +6,7 @@ import { CustomersModule } from './modules/customers/customers.module';
 import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { PaymentsModule } from './modules/payments/payments.module';
+import { GatewayModule } from './modules/websocket/gateway/gateway.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { PaymentsModule } from './modules/payments/payments.module';
     UsersModule,
     AuthModule,
     PaymentsModule,
+    GatewayModule,
   ],
 })
 export class AppModule {}
