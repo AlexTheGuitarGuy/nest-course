@@ -7,7 +7,11 @@ import {
 import { OnModuleInit } from '@nestjs/common';
 import { Server } from 'socket.io';
 
-@WebSocketGateway()
+@WebSocketGateway({
+  cors: {
+    origin: ['http://localhost:3000'],
+  },
+})
 export class ChatGateway implements OnModuleInit {
   @WebSocketServer()
   server: Server;
