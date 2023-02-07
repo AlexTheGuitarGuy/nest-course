@@ -7,9 +7,14 @@ import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { PaymentsModule } from './modules/payments/payments.module';
 import { GatewayModule } from './modules/websocket/gateway/gateway.module';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
   imports: [
+    ThrottlerModule.forRoot({
+      ttl: 60 * 60,
+      limit: 100,
+    }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',
@@ -25,6 +30,12 @@ import { GatewayModule } from './modules/websocket/gateway/gateway.module';
     AuthModule,
     PaymentsModule,
     GatewayModule,
+  ],
+  providers: [
+    {
+      provide: 'APP_GUARD',
+      useClass: ThrottlerGuard,
+    },
   ],
 })
 export class AppModule {}

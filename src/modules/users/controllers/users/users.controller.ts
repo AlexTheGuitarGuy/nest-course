@@ -11,6 +11,8 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
+import { Throttle } from '@nestjs/throttler';
+
 import { UsersService } from '../../services/users/users.service';
 import { SerializedUser } from '../../types';
 import { NotFoundException } from '../../../../exceptions/NotFoundException';
@@ -22,6 +24,7 @@ export class UsersController {
     @Inject('USERS_SERVICE') private readonly usersService: UsersService,
   ) {}
 
+  @Throttle(5, 15)
   @UseInterceptors(ClassSerializerInterceptor)
   @Get()
   async getUsers() {

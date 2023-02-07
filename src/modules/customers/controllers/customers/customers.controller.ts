@@ -1,3 +1,5 @@
+import { SkipThrottle } from '@nestjs/throttler';
+
 import {
   Body,
   Controller,
@@ -27,6 +29,7 @@ export class CustomersController {
     return { count: customers.length, data: customers };
   }
 
+  @SkipThrottle()
   @Get(':id')
   getCustomerById(@Param('id', ParseIntPipe) id: number) {
     const customer = this.customersService.findCustomerById(id);
